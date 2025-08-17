@@ -78,7 +78,7 @@ ON
 ```sql
 SELECT 
        country,  
-       COUNT(*) AS customer_count  --Подсчет количества клиентов
+       COUNT(customer_id) AS customer_count  --Подсчет количества клиентов
 FROM 
        Customers
 GROUP BY
@@ -95,7 +95,7 @@ ORDER BY
 ```sql
 SELECT 
        item,
-       COUNT(*) AS total_orders,      --Количество заказов
+       COUNT(order_id) AS total_orders,      --Количество заказов
        AVG(amount) AS average_amount  --Средняя сумма
 FROM 
        Orders
