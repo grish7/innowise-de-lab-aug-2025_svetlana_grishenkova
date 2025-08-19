@@ -42,7 +42,11 @@ SAVEPOINT before_removing_employees;
 
 --9. удаление сотрудников без проектов
 DELETE FROM Employees e
-WHERE NOT EXISTS (SELECT 1 FROM EmployeeProjects ep WHERE ep.EmployeeID = e.EmployeeID );
+WHERE NOT EXISTS (
+                SELECT 1 
+                FROM EmployeeProjects ep 
+                WHERE ep.EmployeeID = e.EmployeeID 
+                );
 
 --10.точка сохранения после удаления 
 SAVEPOINT after_removing_employees;
@@ -57,10 +61,24 @@ VALUES ('New CRM-system development',120000.00,'2023-07-05','2023-11-27');
 --13. Проверка добавления проекта
 SELECT * FROM Projects
 
---14.  Назначаем сотрудников на новый проект
+--14.  Назначаем сотрудников на новый проект  !!!!!!!!!!   без хардкода
+
 INSERT INTO EmployeeProjects(EmployeeID,ProjectID,HoursWorked)
-VALUES (1,4,180),
-       (2,4,140);
+SELECT 
+      e.EmployeeID,
+      p.ProjectID,
+      CASE 
+       	   WHEN e.FirstName = 'Alice' THEN 180
+       	   WHEN e.FirstName = 'Bob' THEN 160
+      end AS HoursWorked       
+FROM  Projects p
+CROSS JOIN Employees e
+WHERE LOWER( p.ProjectName) = LOWER('New CRM-system development')
+  AND (e.FirstName, e.LastName) 
+  IN (
+      ('Alice', 'Smith'),
+      ('Bob', 'Johnson')
+  )
 
 --15. Проверяем результаты добавления
 SELECT * FROM EmployeeProjects ORDER BY EmployeeID

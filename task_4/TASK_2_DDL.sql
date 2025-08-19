@@ -30,18 +30,11 @@ ALTER TABLE Employees ADD COLUMN Email VARCHAR(100);
 -- 4.Проверка
 SELECT * FROM Employees ORDER BY EmployeeID;
 
---5. обновление данных используя условный оператор
+--5. обновление данных   !!!!!!!!!!!!!!!   без хардкода
 UPDATE Employees
-SET Email = CASE EmployeeID 
-WHEN 1 THEN 'alice@gmail.com'
-WHEN 2 THEN 'bob@gmail.com'
-WHEN 3 THEN 'charlie@gmail.com'
-WHEN 4 THEN 'diana@gmail.com'
-WHEN 5 THEN 'eve@gmail.com'
-WHEN 6 THEN 'john@gmail.com'
-WHEN 7 THEN 'david@gmail.com'
-END
-WHERE EmployeeID BETWEEN 1 AND 7
+SET Email = LOWER(FirstName ||'_'|| LastName || EmployeeID ||'@gmail.com')
+WHERE FirstName IS NOT NULL 
+AND LastName IS NOT NULL
 
 -- 6.Проверка
 SELECT * FROM Employees ORDER BY EmployeeID;
